@@ -37,3 +37,6 @@ out/
 .vscode/
 
 .env
+application.yaml
+application-test.yaml
+src/main/resources/application.yaml
