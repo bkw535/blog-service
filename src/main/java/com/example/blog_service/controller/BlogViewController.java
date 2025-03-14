@@ -1,11 +1,14 @@
 package com.example.blog_service.controller;
 
+import com.example.blog_service.domain.Article;
 import com.example.blog_service.dto.ArticleListViewResponse;
+import com.example.blog_service.dto.ArticleViewResponse;
 import com.example.blog_service.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -20,12 +23,14 @@ public class BlogViewController {
                 .map(ArticleListViewResponse::new)
                 .toList();
         model.addAttribute("articles", articles);
-        System.out.println("📌 가져온 데이터: " + articles);
         return "articleList";
     }
 
-    @GetMapping("/test-template")
-    public String testTemplate() {
-        return "articleList"; // 템플릿 파일 로드 테스트
+    @GetMapping("/articles/{id}")
+    public String getArticle(@PathVariable Long id, Model model) {
+        Article article = blogService.findById(id);
+        model.addAttribute("article", new ArticleViewResponse(article));
+
+        return "article";
     }
 }
